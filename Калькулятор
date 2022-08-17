@@ -1,0 +1,120 @@
+import java.util.InputMismatchException;
+import java.util.Scanner;
+
+public class Qwerty {
+    static int res,num1,num2;
+    static char operation;
+    public static void main(String[] args) {
+        Scanner scanner = new Scanner(System.in);
+        String userInput = scanner.nextLine();
+        char[] under_char = new char[10];
+        for (int i = 0; i < userInput.length(); i++) {
+            under_char[i] = userInput.charAt(i);
+            if (under_char[i] == '+') {
+                operation = '+';
+            }
+            if (under_char[i] == '-') {
+                operation = '-';
+            }
+            if (under_char[i] == '*') {
+                operation = '*';
+            }
+            if (under_char[i] == '/') {
+                operation = '/';
+            }
+        }
+        String under_charString = String.valueOf(under_char);
+        String[] numbers = under_charString.split("[+-/*]");
+        String n1 = numbers[0] ;
+        String n2 = numbers[1] ;
+        String rome1 = n1.trim() ;
+        String rome2 = n2.trim() ;
+        num1 = romanToArabic(rome1);
+        num2 = romanToArabic(rome2);
+        if (num1 < 0 && num2 < 0) {
+            res = 0;
+        } else {
+            res = calculated(num1, num2, operation);
+            String resultRoman = convertNumToRoman(res);
+            System.out.println(resultRoman);
+        }
+        int crutch = rome1.codePointAt(0);
+        switch (crutch){
+            case (48|49|50|51|52|53|54|55|56|57):
+                num1 = Integer.parseInt(rome1);
+                num2 = Integer.parseInt(rome2);
+                res = calculated(num1, num2, operation);
+                System.out.println(res);
+                break;
+        }
+    }
+    private static int romanToArabic(String roman) {
+        try {
+            if (roman.equals("I")|roman.equals("1")) {
+                return 1;
+            } else if (roman.equals("II")|roman.equals("2")) {
+                return 2;
+            } else if (roman.equals("III")|roman.equals("3")) {
+                return 3;
+            } else if (roman.equals("IV")|roman.equals("4")) {
+                return 4;
+            } else if (roman.equals("V")|roman.equals("5")) {
+                return 5;
+            } else if (roman.equals("VI")|roman.equals("6")) {
+                return 6;
+            } else if (roman.equals("VII")|roman.equals("7")) {
+                return 7;
+            } else if (roman.equals("VIII")|roman.equals("8")) {
+                return 8;
+            } else if (roman.equals("IX")|roman.equals("9")) {
+                return 9;
+            } else if (roman.equals("X")|roman.equals("10")) {
+                return 10;
+            }
+        } catch (InputMismatchException e) {
+            throw new InputMismatchException("Неверный формат данных");
+        }
+        return -1;
+    }
+    private static String convertNumToRoman(int numArabian) {
+        String[] roman = { "0","I", "II", "III", "IV", "V", "VI", "VII", "VIII", "IX", "X", "XI", "XII", "XIII", "XIV",
+                "XV", "XVI", "XVII", "XVIII", "XIX", "XX",
+                "XXI", "XXII", "XXIII", "XXIV", "XXV", "XXVI", "XXVII", "XXVIII", "XXIX", "XXX", "XXXI", "XXXII", "XXXIII",
+                "XXXIV", "XXXV", "XXXVI", "XXXVII", "XXXVIII", "XXXIX", "XL",
+                "XLI", "XLII", "XLIII", "XLIV", "XLV", "XLVI", "XLVII", "XLVIII", "XLIX", "L", "LI", "LII", "LIII", "LIV", "LV",
+                "LVI", "LVII", "LVIII", "LIX", "LX",
+                "LXI", "LXII", "LXIII", "LXIV", "LXV", "LXVI", "LXVII", "LXVIII", "LXIX", "LXX",
+                "LXXI", "LXXII", "LXXIII", "LXXIV", "LXXV", "LXXVI", "LXXVII", "LXXVIII", "LXXIX", "LXXX",
+                "LXXXI", "LXXXII", "LXXXIII", "LXXXIV", "LXXXV", "LXXXVI", "LXXXVII", "LXXXVIII", "LXXXIX", "XC",
+                "XCI", "XCII", "XCIII", "XCIV", "XCV", "XCVI", "XCVII", "XCVIII", "XCIX", "C"
+        };
+        final String s = roman[numArabian];
+        return s;
+    }
+    public static int calculated(int num1, int num2, char op) {
+        int result = 0;
+        switch (op) {
+            case '+':
+                result = num1 + num2;
+                break;
+            case '-':
+                result = num1 - num2;
+                break;
+            case '*':
+                result = num1 * num2;
+                break;
+            case '/':
+                try {
+                    result = num1 / num2;
+                } catch (ArithmeticException | InputMismatchException e) {
+                    System.out.println("Exception : " + e);
+                    System.out.println("Only integer non-zero parameters allowed");
+                    break;
+                }
+                break;
+            default:
+                throw new IllegalArgumentException("Не верный знак операции");
+        }
+        return result;
+    }
+}
